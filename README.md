@@ -114,6 +114,8 @@ Prior to your first deployment, you'll need to do a few things:
   ```sh
   fly volumes create data --size 1 --app remix-blog-tutorial-685a
   fly volumes create data --size 1 --app remix-blog-tutorial-685a-staging
+
+  Error: failed creating volume: failed to create volume: To create more than 1GB in volumes please add a payment method. https://fly.io/dashboard/michaux-kelley/billing
   ```
 
 Now that everything is set up you can commit and push your changes to your repo. Every commit to your `main` branch will trigger a deployment to your production environment, and every commit to your `dev` branch will trigger a deployment to your staging environment.
