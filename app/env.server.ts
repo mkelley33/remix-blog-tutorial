@@ -7,15 +7,7 @@ export function getEnv() {
   };
 }
 
-export default function useOptionalAdminUser() {
-  const user = useOptionalUser();
-  if (!user) return null;
-  if (user.email !== ENV.ADMIN_EMAIL) return null;
-  return user;
-}
-
 type ENV = ReturnType<typeof getEnv>;
-
 declare global {
   var ENV: ENV;
   interface Window {

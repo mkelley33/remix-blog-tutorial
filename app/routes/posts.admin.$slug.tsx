@@ -1,4 +1,4 @@
-import type { ActionArgs, LoaderArgs } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import {
   Form,
@@ -14,8 +14,13 @@ import {
   getPost,
   updatePost,
 } from "~/models/post.server";
+import { requireAdminUser } from "~/session.server";
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader: LoaderFunction = async ({
+  params,
+  request,
+}: LoaderArgs) => {
+  await requireAdminUser(request);
   invariant(params.slug, "params.slug is required");
   if (params.slug === "new") {
     return json({});

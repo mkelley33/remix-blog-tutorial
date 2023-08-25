@@ -1,9 +1,11 @@
-import { json } from "@remix-run/node";
+import { type LoaderArgs, type LoaderFunction, json } from "@remix-run/node";
 import { Link, useLoaderData, Outlet } from "@remix-run/react";
 
-import { getPosts } from "~/models/post.server";
+import { type Post, getPosts } from "~/models/post.server";
+import { requireAdminUser } from "~/session.server";
 
-export const loader = async () => {
+export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
+  await requireAdminUser(request);
   return json({ posts: await getPosts() });
 };
 
@@ -15,7 +17,7 @@ export default function PostAdmin() {
       <div className="grid grid-cols-4 gap-6">
         <nav className="col-span-4 md:col-span-1">
           <ul>
-            {posts.map((post) => (
+            {posts.map((post: Post) => (
               <li key={post.slug}>
                 <Link to={post.slug} className="text-blue-600 underline">
                   {post.title}
