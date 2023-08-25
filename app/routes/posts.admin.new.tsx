@@ -1,15 +1,16 @@
 import type { ActionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
+import invariant from "tiny-invariant";
 
 import { createPost } from "~/models/post.server";
 
 export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
 
-  const title = formData.get("title") as string;
-  const slug = formData.get("slug") as string;
-  const markdown = formData.get("markdown") as string;
+  const title = formData.get("title");
+  const slug = formData.get("slug");
+  const markdown = formData.get("markdown");
 
   const errors = {
     title: title ? null : "Title is required",
@@ -20,6 +21,10 @@ export const action = async ({ request }: ActionArgs) => {
   if (hasErrors) {
     return json(errors);
   }
+
+  invariant(typeof title === "string", "title must be a string");
+  invariant(typeof slug === "string", "slug must be a string");
+  invariant(typeof markdown === "string", "markdown must be a string");
 
   await createPost({ title, slug, markdown });
 
